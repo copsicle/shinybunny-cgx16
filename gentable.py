@@ -1,4 +1,3 @@
-import os
 with open("zombies/round1/ZOMA", 'rb') as binfile:
     s = list('{:02X}'.format(c) for c in binfile.read())[205:]
     count = 0
