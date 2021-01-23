@@ -7,14 +7,18 @@ MODEL tiny
 CODESEG
 ORG 100h
 start:
+	; Push start address and start search in 8000h
 	push ax
 	mov bx, 8000h
 run:
+	; Search for zombies from 8100h-8700h
 	inc bh
 	mov ax, [bx]
 	and bh, 087h
+	; If the low and high bytes are different (not CCCCh) there might be an address here
 	cmp al, ah
 	je run
+	; Unscramble zombie address with inverse translation table
 	pop bx
 	add bx, ttbl-start
 	xlat
@@ -22,11 +26,13 @@ run:
 	xlat
 	xor ah, al
 	xchg ax, bx
+	; Inject into zombie - mov ax, {our initial address} & jmp ax
 	sub ax, ttbl-start
 	mov [bx + 072h], 0B8h
 	mov [bx + 073h], ax
 	mov [bx + 075h], 0E0FFh
 	jmp start
+; Translation table generated from gentable.py
 ttbl db 00h,02Eh,088h,0A6h,02Bh,005h,0A3h,08Dh,093h,0BDh,01Bh,035h,0B8h,096h,030h,01Eh,04Eh,060h,0C6h,0E8h,065h,04Bh,0EDh,0C3h,0DDh,0F3h,055h,07Bh,0F6h,0D8h,07Eh,050h,0FAh,0D4h,072h,05Ch
 db 0D1h,0FFh,059h,077h,069h,047h,0E1h,0CFh,042h,06Ch,0CAh,0E4h,0B4h,09Ah,03Ch,012h,09Fh,0B1h,017h,039h,027h,009h,0AFh,081h,00Ch,022h,084h,0AAh,06Ah,044h,0E2h,0CCh,041h,06Fh,0C9h,0E7h,0F9h,0D7h
 db 071h,05Fh,0D2h,0FCh,05Ah,074h,024h,00Ah,0ACh,082h,00Fh,021h,087h,0A9h,0B7h,099h,03Fh,011h,09Ch,0B2h,014h,03Ah,090h,0BEh,018h,036h,0BBh,095h,033h,01Dh,003h,02Dh,08Bh,0A5h,028h,006h,0A0h,08Eh

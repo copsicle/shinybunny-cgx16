@@ -46,6 +46,7 @@
 00000052  CC                int3
 00000053  CC                int3
 00000054  CC                int3
+;------------Actual Code------------;
 00000055  1E                push ds
 00000056  07                pop es
 00000057  50                push ax
@@ -65,6 +66,7 @@
 00000074  46                inc si
 00000075  83E63F            and si,byte +0x3f
 00000078  EBED              jmp short 0x67
+;-------------------end-------------------;
 0000007A  CC                int3
 0000007B  CC                int3
 0000007C  CC                int3
@@ -112,6 +114,7 @@
 000000CA  CC                int3
 000000CB  CC                int3
 000000CC  CC                int3
+;----------------Translation Table----------------;
 000000CD  00BBD368          add [bp+di+0x68d3],bh
 000000D1  BE056D            mov si,0x6d05
 000000D4  D6                salc
