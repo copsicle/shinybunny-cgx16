@@ -15,5 +15,5 @@ pop ds
 
 lodsw
 ```
-and put a `stosw` at the start of the attacker\`s code.\n
+and put a `stosw` at the start of the attacker\`s code.
 note that those lines will swap between es and ds
