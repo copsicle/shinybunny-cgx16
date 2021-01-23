@@ -15,5 +15,5 @@ pop ds
 
 lodsw
 ```
-and put a ```x86asm stosw``` at the start of the attacker\` code.
+and put a ```x86asm stosw``` at the start of the attacker\`s code.
 note that those lines will swap between es and ds
