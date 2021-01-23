@@ -1,4 +1,2 @@
 TASM %1
 TLINK /t %1
-PAUSE
-TD %1
