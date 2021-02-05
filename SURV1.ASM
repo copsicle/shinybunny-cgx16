@@ -7,48 +7,65 @@ MODEL tiny
 CODESEG
 ORG 100h
 init:
-	push ax
-	mov cx, 0Ah
+	stosw
+	mov cx, 18h
+	; Wait for zombies to write into 8100-8800 by getting energy
 hold:
-	WAIT
-	WAIT
-	WAIT
-	WAIT
+	wait
+	wait
+	wait
+	wait
 	loop hold
-	mov cx, 2
 start:
-	; Push start address and start search in 8000h
-	push ax
+	mov bx, 8100h
+l1:	
+	; Read and overwrite scrambled locations in the range
+	push [bx]
+	mov [word bx], 0CCCCh
+	inc bh 
+	cmp bh, 89h
+	jne l1
+	; Initilize table address
 	mov bx, ax
-	add bx, offset ind
-	inc [word bx]
-	add bx, [bx]
-	dec bx
-	mov bh, [bx]
-	xor bl, bl
-	mov ax, [bx]
-	; If the low and high bytes are different (not CCCCh) there might be an address here
-	cmp al, ah
+	add bx, offset ttbl - init
+l2:
+	; Loop over stack and check if address might be legit
+	cmp sp, 800h
+	je aftersurv
 	pop ax
-	je l1
-	; Unscramble zombie address with inverse translation table
-	pop bx
-	add bx, offset ttbl
+	cmp al, ah
+	je l2
+	; Unscramble locations from stack
 	xlat
 	xchg al, ah
 	xlat
 	xor ah, al
 	xchg ax, bx
-	; Inject into zombie - mov ax, {our initial address} & jmp ax
-	sub ax, offset ttbl
-	mov [byte bx + 072h], 0B8h
+	; Inject into zombie - mov bx, {the address to the after label} & jmp bx
+	sub ax, offset ttbl - after
+	mov [byte bx + 072h], 0BBh
 	mov [bx + 073h], ax
-	mov [word bx + 075h], 0E0FFh
-l1:
-	loop start
-
-ind dw 2
-locs db 081h, 085h, 042h, 046h, 023h, 027h, 004h, 008h 
+	mov [word bx + 075h], 0E3FFh
+	; Change bx back to table address and loop
+	xchg ax, bx
+	add bx, offset ttbl - after
+	jmp l2
+aftersurv:
+	; Put original address back in ax for the survivor
+	sub bx, offset ttbl - init
+	mov ax, bx
+after:
+	; Zombies start here
+	push ds
+	pop es
+	mov cx, 2
+	mov di, ax
+	xor di, bx
+l3:
+	int 86h
+	loop l3
+last:
+	jmp last
 ; Translation table generated from gentable.py
 ttbl db 000h,02Eh,088h,0A6h,02Bh,005h,0A3h,08Dh,093h,0BDh,01Bh,035h,0B8h,096h,030h,01Eh,04Eh,060h,0C6h,0E8h,065h,04Bh,0EDh,0C3h,0DDh,0F3h,055h,07Bh,0F6h,0D8h,07Eh,050h,0FAh,0D4h,072h,05Ch
 db 0D1h,0FFh,059h,077h,069h,047h,0E1h,0CFh,042h,06Ch,0CAh,0E4h,0B4h,09Ah,03Ch,012h,09Fh,0B1h,017h,039h,027h,009h,0AFh,081h,00Ch,022h,084h,0AAh,06Ah,044h,0E2h,0CCh,041h,06Fh,0C9h,0E7h,0F9h,0D7h
