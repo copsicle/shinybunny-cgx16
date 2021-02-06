@@ -25,7 +25,6 @@ local l2end
 local aftersurv
 local after
 local l3
-local last
 beg:
 	; Write our location to shared memory
 	stosw
@@ -92,13 +91,10 @@ l3:
 	add di, 0FFh
 	loop l3
 
-	mov ax, 0CCCCh
-	add bx, offset last - init
-last:
-	; Same concept but for writing words instead until the end of time
-	xor di, bx
+	mov ax, 050ABh
+	mov bx, di
 	stosw
-	jmp last
+	jmp bx
 ; End repeating 'macro'
 endm
 ; Translation table generated from gentable.py
