@@ -8,7 +8,7 @@ ORG 100h
 init:
 	; Couldn't figure out the syntax to make jmp short work on tasm so I defined it manually
 	; Offset is calculated in preprocessor, 1 is added because of the obfuscation spacing
-	db 0EBh, ((ttbl - mac) / 2)
+	db 0EBh, ((ttbl - mac) / 2) + 1
 	; Obfuscation spacing
 	db 0
 mac:
