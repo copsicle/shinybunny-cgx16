@@ -16,6 +16,7 @@ mac:
 ; Define local labels to fix redefining labels whel theyre duplicated
 ; If you happen to add more labels make sure you make them local
 rept 2
+local beg
 local hold
 local start
 local l1
@@ -25,6 +26,7 @@ local aftersurv
 local after
 local l3
 local last
+beg:
 	; Write our location to shared memory
 	stosw
 	mov cx, 18h
@@ -90,12 +92,12 @@ l3:
 	add di, 0FFh
 	loop l3
 
+	mov ax, 0CCCCh
 	add bx, offset last - init
 last:
 	; Same concept but for writing words instead until the end of time
 	xor di, bx
-	mov [word di], 0CCCCh
-	add di, 0FFh
+	stosw
 	jmp last
 ; End repeating 'macro'
 endm
