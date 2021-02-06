@@ -1,24 +1,31 @@
 ; Author: Gonen Cohen
-; Example of finding and taking over a zombie
-; This code probably can be optimized and doesn't win against anything right now
+; First survivor code
 IDEAL
 MODEL tiny
 
 CODESEG
 ORG 100h
 init:
-	db 0EBh, ((ttbl - mac) / 2) + 1
+	; Couldn't figure out the syntax to make jmp short work on tasm so I defined it manually
+	; Offset is calculated in preprocessor, 1 is added because of the obfuscation spacing
+	db 0EBh, ((ttbl - mac) / 2)
+	; Obfuscation spacing
+	db 0
 mac:
-db 0
+; Repeat the code twice for smart bomb protection
 rept 2
+; Define local labels to fix redefining labels whel theyre duplicated
+; If you happen to add more labels make sure you make them local
 local hold
 local start
 local l1
 local l2
+local l2end
 local aftersurv
 local after
 local l3
 local last
+	; Write our location to shared memory
 	stosw
 	mov cx, 18h
 	; Wait for zombies to write into 8100-8800 by getting energy
@@ -30,23 +37,22 @@ hold:
 	loop hold
 start:
 	mov bx, 8100h
+	mov cx, 8
 l1:	
 	; Read and overwrite scrambled locations in the range
 	push [bx]
 	mov [word bx], 0CCCCh
 	inc bh 
-	cmp bh, 89h
-	jne l1
+	loop l1
 	; Initilize table address
 	mov bx, ax
 	add bx, offset ttbl - init
+	mov cx, 8
 l2:
 	; Loop over stack and check if address might be legit
-	cmp sp, 800h
-	je aftersurv
 	pop ax
 	cmp al, ah
-	je l2
+	je l2end
 	; Unscramble locations from stack
 	xlat
 	xchg al, ah
@@ -61,29 +67,37 @@ l2:
 	; Change bx back to table address and loop
 	xchg ax, bx
 	add bx, offset ttbl - after
-	jmp l2
+l2end:	
+	loop l2
 aftersurv:
 	; Put original address back in ax for the survivor
 	sub bx, offset ttbl - init
 	mov ax, bx
 after:
-	; Zombies start here
+	; Zombies start here, save es and pop ds into it for bombing
 	push es
 	push ds
 	pop es
+	; Use up both our bombs
 	mov cx, 2
 	mov di, ax
 l3:
+	; Bomb by xoring your initial location (different for zombies) with our location
+	; This will always be 0-100 for the survivor, xoring also helps us avoid ourselves
 	xor di, bx
 	int 86h
+	; Add some value to di so it would move
 	add di, 0FFh
 	loop l3
+
 	add bx, offset last - init
 last:
+	; Same concept but for writing words instead until the end of time
 	xor di, bx
 	mov [word di], 0CCCCh
 	add di, 0FFh
 	jmp last
+; End repeating 'macro'
 endm
 ; Translation table generated from gentable.py
 ttbl db 000h,02Eh,088h,0A6h,02Bh,005h,0A3h,08Dh,093h,0BDh,01Bh,035h,0B8h,096h,030h,01Eh,04Eh,060h,0C6h,0E8h,065h,04Bh,0EDh,0C3h,0DDh,0F3h,055h,07Bh,0F6h,0D8h,07Eh,050h,0FAh,0D4h,072h,05Ch

@@ -1,0 +1,48 @@
+Turbo Assembler  Version 4.1  Copyright (c) 1988, 1996 Borland International
+
+Assembling file:   surv1.ASM
+**Error** surv1.ASM(101) REPT(16) Symbol already different kind: HOLD
+**Error** surv1.ASM(101) REPT(21) Argument to operation or instruction has illegal size
+**Error** surv1.ASM(101) REPT(22) Symbol already different kind: START
+**Error** surv1.ASM(101) REPT(25) Symbol already different kind: L1
+**Error** surv1.ASM(101) REPT(30) Argument to operation or instruction has illegal size
+**Error** surv1.ASM(101) REPT(35) Symbol already different kind: L2
+**Error** surv1.ASM(101) REPT(39) Argument to operation or instruction has illegal size
+**Error** surv1.ASM(101) REPT(47) Illegal use of register
+*Warning* surv1.ASM(101) REPT(47) [Constant] assumed to mean immediate constant
+**Error** surv1.ASM(101) REPT(53) Illegal use of register
+*Warning* surv1.ASM(101) REPT(53) [Constant] assumed to mean immediate constant
+**Error** surv1.ASM(101) REPT(54) Symbol already different kind: L2END
+**Error** surv1.ASM(101) REPT(55) Argument to operation or instruction has illegal size
+**Error** surv1.ASM(101) REPT(56) Symbol already different kind: AFTERSURV
+**Error** surv1.ASM(101) REPT(60) Symbol already different kind: AFTER
+**Error** surv1.ASM(101) REPT(68) Symbol already different kind: L3
+**Error** surv1.ASM(101) REPT(75) Argument to operation or instruction has illegal size
+**Error** surv1.ASM(101) REPT(77) Can't subtract dissimilar relative quantities
+**Error** surv1.ASM(101) REPT(78) Symbol already different kind: LAST
+*Warning* surv1.ASM(101) REPT(83) Pointer expression needs brackets
+**Error** surv1.ASM(101) REPT(100) Symbol already different kind: HOLD
+**Error** surv1.ASM(101) REPT(105) Argument to operation or instruction has illegal size
+**Error** surv1.ASM(101) REPT(106) Symbol already different kind: START
+**Error** surv1.ASM(101) REPT(109) Symbol already different kind: L1
+**Error** surv1.ASM(101) REPT(114) Argument to operation or instruction has illegal size
+**Error** surv1.ASM(101) REPT(119) Symbol already different kind: L2
+**Error** surv1.ASM(101) REPT(123) Argument to operation or instruction has illegal size
+**Error** surv1.ASM(101) REPT(131) Illegal use of register
+*Warning* surv1.ASM(101) REPT(131) [Constant] assumed to mean immediate constant
+**Error** surv1.ASM(101) REPT(137) Illegal use of register
+*Warning* surv1.ASM(101) REPT(137) [Constant] assumed to mean immediate constant
+**Error** surv1.ASM(101) REPT(138) Symbol already different kind: L2END
+**Error** surv1.ASM(101) REPT(139) Argument to operation or instruction has illegal size
+**Error** surv1.ASM(101) REPT(140) Symbol already different kind: AFTERSURV
+**Error** surv1.ASM(101) REPT(144) Symbol already different kind: AFTER
+**Error** surv1.ASM(101) REPT(152) Symbol already different kind: L3
+**Error** surv1.ASM(101) REPT(159) Argument to operation or instruction has illegal size
+**Error** surv1.ASM(101) REPT(161) Can't subtract dissimilar relative quantities
+**Error** surv1.ASM(101) REPT(162) Symbol already different kind: LAST
+*Warning* surv1.ASM(101) REPT(167) Pointer expression needs brackets
+Error messages:    34
+Warning messages:  6
+Passes:            1
+Remaining memory:  456k
+
