@@ -13,9 +13,9 @@ init:
 	db 0
 mac:
 ; Repeat the code twice for smart bomb protection
-rept 2
 ; Define local labels to fix redefining labels whel theyre duplicated
 ; If you happen to add more labels make sure you make them local
+rept 2
 local hold
 local start
 local l1
