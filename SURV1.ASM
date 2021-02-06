@@ -8,7 +8,7 @@ ORG 100h
 init:
 	; Couldn't figure out the syntax to make jmp short work on tasm so I defined it manually
 	; Offset is calculated in preprocessor, 1 is added because of the obfuscation spacing
-	db 0EBh, ((ttbl - mac) / 2) + 1
+	db 0EBh, ((ttbl - mac) / 2) + 2
 	; Obfuscation spacing
 	db 0
 mac:
@@ -25,10 +25,11 @@ local l2end
 local aftersurv
 local after
 local l3
+local shooter
 beg:
 	; Write our location to shared memory
 	stosw
-	mov cx, 18h
+	mov cx, 0Ch
 	; Wait for zombies to write into 8100-8800 by getting energy
 hold:
 	wait
@@ -76,21 +77,22 @@ aftersurv:
 	mov ax, bx
 after:
 	; Zombies start here, save es and pop ds into it for bombing
-	push es
 	push ds
+	push ds
+	pop ss
 	pop es
-	; Use up both our bombs
-	mov cx, 2
 	mov di, ax
+	cmp ax, bx
+	je shooter
+	; Use up both our bombs
+	mov cx, 020h
 l3:
-	; Bomb by xoring your initial location (different for zombies) with our location
-	; This will always be 0-100 for the survivor, xoring also helps us avoid ourselves
-	xor di, bx
-	int 86h
-	; Add some value to di so it would move
-	add di, 0FFh
+	wait
+	wait
+	wait
+	wait
 	loop l3
-
+shooter:
 	mov ax, 050ABh
 	mov bx, di
 	stosw
